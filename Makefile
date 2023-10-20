@@ -19,6 +19,6 @@ parallel-test:
 bench-test:
 	docker compose exec app go test -v -cover -short -bench .
 mod-init: #依存関係を管理するgo.modファイルの新規作成
-	go mod init
+	docker compose exec app go mod init
 mod-tidy: #依存関係を管理するgo.modファイルの更新
-	go mod tidy
+	docker compose exec app go mod tidy
