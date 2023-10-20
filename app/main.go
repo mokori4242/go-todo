@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"app/config"
+	"log"
 )
 
 func main() {
@@ -12,4 +13,6 @@ func main() {
 	fmt.Println(config.Config.DBHost)
 	fmt.Println(config.Config.DBPort)
 	fmt.Println(config.Config.LogFile)
+
+	log.Println("test")
 }
