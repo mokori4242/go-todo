@@ -12,6 +12,7 @@ type ConfigList struct {
     DBPassword string
     DBHost string
     DBPort string
+	DBName string
 	LogFile string
 }
 
@@ -33,6 +34,7 @@ func LoadConfig() {
 		DBPassword: cfg.Section("db").Key("password").MustString("password"),
 		DBHost: cfg.Section("db").Key("host").MustString("db"),
 		DBPort: cfg.Section("db").Key("port").MustString("5432"),
+		DBName: cfg.Section("db").Key("name").MustString("posgre"),
 		LogFile: cfg.Section("app").Key("logfile").MustString("app.log"),
 	}
 }
