@@ -17,5 +17,14 @@ func main() {
 
 	// log.Println("test")
 
-	fmt.Println(models.Db)
+	// fmt.Println(models.Db)
+
+	u := &models.User{
+		Name: "test",
+		Email: "test@example.com",
+		Password: "password",
+	}
+	fmt.Println(u)
+
+	u.CreateUser()
 }

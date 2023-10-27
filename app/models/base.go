@@ -5,6 +5,8 @@ import (
 	"database/sql"
 	"app/config"
 	"fmt"
+	"github.com/pborman/uuid"
+	"crypto/sha1"
 	_ "github.com/lib/pq"
 )
 
@@ -33,4 +35,14 @@ func init() {
 		created_at TIMESTAMP)`, tableNameUser)
 
 	Db.Exec(cmdU)
+}
+
+func createUUID() (uuidobj uuid.UUID) {
+	uuidobj = uuid.NewRandom()
+	return uuidobj
+}
+
+func Encrypt(plaintext string) (cryptext string) {
+	cryptext = fmt.Sprintf("%x", sha1.Sum([]byte(plaintext)))
+	return cryptext
 }
