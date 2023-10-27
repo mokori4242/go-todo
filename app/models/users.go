@@ -3,6 +3,7 @@ package models
 import (
 	"time"
 	"log"
+	"context"
 )
 
 type User struct {
@@ -30,10 +31,10 @@ func (u *User) CreateUser() (err error) {
 	return err
 }
 
-func GetUser(id int) (user User, err error) {
+func GetUser(ctx context.Context, id int) (user User, err error) {
 	user = User{}
 	cmd := `select * from users where id = $1`
-	err = Db.QueryRow(cmd, id).Scan(
+	err = Db.QueryRowContext(ctx, cmd, id).Scan(
 		&user.ID,
 		&user.UUID,
 		&user.Name,
@@ -42,4 +43,14 @@ func GetUser(id int) (user User, err error) {
 		&user.CreatedAt,
 	)
 	return user, err
+}
+
+func (u *User) UpdateUser(ctx context.Context) (err error) {
+
+	cmd := `update users set name = $1, email = $2 where id = $3`
+	_, err = Db.ExecContext(ctx, cmd, u.Name, u.Email, u.ID)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	return err
 }
