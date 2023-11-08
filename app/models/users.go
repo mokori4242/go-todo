@@ -46,9 +46,17 @@ func GetUser(ctx context.Context, id int) (user User, err error) {
 }
 
 func (u *User) UpdateUser(ctx context.Context) (err error) {
-
 	cmd := `update users set name = $1, email = $2 where id = $3`
 	_, err = Db.ExecContext(ctx, cmd, u.Name, u.Email, u.ID)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	return err
+}
+
+func (u *User) DeleteUser(ctx context.Context) (err error) {
+	cmd := `delete from users where id = $1`
+	_, err = Db.ExecContext(ctx, cmd, u.ID)
 	if err != nil {
 		log.Fatalln(err)
 	}

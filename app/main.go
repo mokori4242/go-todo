@@ -47,4 +47,12 @@ func main() {
 	u.UpdateUser(ctx)
 
 	fmt.Println(u)// 更新後のレコード
+	u.DeleteUser(ctx)
+	u2, err := models.GetUser(ctx, 1)
+
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(u2)// 更新前のレコード
 }
