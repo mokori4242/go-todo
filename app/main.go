@@ -2,13 +2,16 @@ package main
 
 import (
 	"fmt"
-	// "app/config"
+	"app/config"
 	"app/models"
 	// "log"
 	"context"
 )
 
 func main() {
+	ctx := context.Background()
+	config.InitDB()
+	models.CreateUsersTable(ctx)
 	// fmt.Println(config.Config.AppPort)
 	// fmt.Println(config.Config.DBUser)
 	// fmt.Println(config.Config.DBPassword)
@@ -20,39 +23,38 @@ func main() {
 
 	// fmt.Println(models.Db)
 
-	// u := &models.User{
-	// 	Name: "test",
-	// 	Email: "test@example.com",
-	// 	Password: "password",
+	u := &models.User{
+		Name: "washoi",
+		Email: "washoi@example.com",
+		Password: "password",
+	}
+	fmt.Println(u)
+
+	u.CreateUser(ctx)
+	// u, err := models.GetUser(ctx, 2)
+
+	// if err != nil {
+	// 		panic(err)
 	// }
-	// fmt.Println(u)
 
-	// u.CreateUser()
-	ctx := context.Background()
-	u, err := models.GetUser(ctx, 1)
+	// if u.Name == "tekitou" {
+	// 	fmt.Println("User exists")
+	// }
 
-	if err != nil {
-			panic(err)
-	}
+	// fmt.Println(u)// 更新前のレコード
 
-	if u.Name == "tekitou" {
-		fmt.Println("User exists")
-	}
+	// u.Name = "a"
+	// u.Email = "a@a,com"
 
-	fmt.Println(u)// 更新前のレコード
+	// u.UpdateUser(ctx)
 
-	u.Name = "a"
-	u.Email = "a@a,com"
+	// fmt.Println(u)// 更新後のレコード
+	// u.DeleteUser(ctx)
+	// u2, err := models.GetUser(ctx, 1)
 
-	u.UpdateUser(ctx)
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	fmt.Println(u)// 更新後のレコード
-	u.DeleteUser(ctx)
-	u2, err := models.GetUser(ctx, 1)
-
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println(u2)// 更新前のレコード
+	// fmt.Println(u2)// 更新前のレコード
 }
