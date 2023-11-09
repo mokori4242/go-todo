@@ -12,6 +12,7 @@ func main() {
 	ctx := context.Background()
 	config.InitDB()
 	models.CreateUsersTable(ctx)
+	models.CreateTodosTable(ctx)
 	// fmt.Println(config.Config.AppPort)
 	// fmt.Println(config.Config.DBUser)
 	// fmt.Println(config.Config.DBPassword)
