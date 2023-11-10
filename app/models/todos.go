@@ -1,6 +1,7 @@
 package models
 
 import (
+	"time"
 	"log"
 	"context"
 	"app/config"
@@ -8,6 +9,13 @@ import (
 )
 
 const tableNameT = "todos"
+
+type Todo struct {
+	ID int
+	UserID int
+	Content string
+	CreatedAt time.Time
+}
 
 func CreateTodosTable(ctx context.Context) {
 	cmd := fmt.Sprintf(`CREATE TABLE IF NOT EXISTS %s(
@@ -21,4 +29,17 @@ func CreateTodosTable(ctx context.Context) {
 	}
 
 	fmt.Println("Successfully created tables.")
+}
+
+func (u *User) CreateTodo(ctx context.Context, content string) (err error) {
+	cmd := `INSERT INTO todos (
+		user_id,
+		content,
+		created_at) VALUES ($1, $2, $3)`
+
+	_, err = config.Db.ExecContext(ctx, cmd, u.ID, content, time.Now())
+	if err != nil {
+		log.Fatalln(err)
+	}
+	return err
 }
