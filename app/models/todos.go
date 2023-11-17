@@ -43,3 +43,17 @@ func (u *User) CreateTodo(ctx context.Context, content string) (err error) {
 	}
 	return err
 }
+
+func GetTodo(ctx context.Context, id int) (todo Todo, err error) {
+	cmd := `SELECT * FROM todos WHERE id = $1`
+	row := config.Db.QueryRowContext(ctx, cmd, id)
+	if err = row.Scan(
+		&todo.ID,
+		&todo.UserID,
+		&todo.Content,
+		&todo.CreatedAt,
+	); err != nil {
+		log.Fatalln(err)
+	}
+	return todo, err
+}
