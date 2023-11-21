@@ -101,3 +101,12 @@ func (u *User) GetTodosByUser(ctx context.Context) (todos []Todo, err error) {
 	rows.Close()
 	return todos, err
 }
+
+func (t *Todo) UpdateTodoContent(ctx context.Context, content string) (err error) {
+	cmd := `UPDATE todos SET content = $1 WHERE id = $2`
+	_, err = config.Db.ExecContext(ctx, cmd, content, t.ID)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	return err
+}
