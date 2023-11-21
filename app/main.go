@@ -14,32 +14,20 @@ func main() {
 	models.CreateUsersTable(ctx)
 	models.CreateTodosTable(ctx)
 
-	cu := models.User{
-		Name: "tekitou",
-		Email: "a@example.com",
-		Password: "password",
-	}
+	cu, err := models.GetUser(ctx, 2)
 
-	cu.CreateUser(ctx)
+	cu.CreateTodo(ctx, "tekitou1")
+	cu.CreateTodo(ctx, "tekitou2")
+	cu.CreateTodo(ctx, "tekitou3")
 
-	u, err := models.GetUser(ctx, 1)
+	tby, err := cu.GetTodosByUser(ctx)
 
 	if err != nil {
 		panic(err)
 	}
 
-	u.CreateTodo(ctx, "test")
-	u.CreateTodo(ctx, "test2")
-	u.CreateTodo(ctx, "test3")
-
-	t, err := models.GetTodos()
-
-	if err != nil {
-			panic(err)
-	}
-
-	for _, v := range t {
-	fmt.Println(v.Content)
+	for _, v := range tby {
+		fmt.Println(v)
 	}
 
 	// fmt.Println(t)

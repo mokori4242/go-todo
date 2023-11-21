@@ -58,9 +58,31 @@ func GetTodo(ctx context.Context, id int) (todo Todo, err error) {
 	return todo, err
 }
 
-func GetTodos() (todos []Todo, err error) {
+func GetTodos(ctx context.Context) (todos []Todo, err error) {
 	cmd := `SELECT * FROM todos`
-	rows, err := config.Db.Query(cmd)
+	rows, err := config.Db.QueryContext(ctx, cmd)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	for rows.Next() {
+		var todo Todo
+		if err := rows.Scan(
+			&todo.ID,
+			&todo.UserID,
+			&todo.Content,
+			&todo.CreatedAt,
+		); err != nil {
+			log.Fatalln(err)
+		}
+		todos = append(todos, todo)
+	}
+	rows.Close()
+	return todos, err
+}
+
+func (u *User) GetTodosByUser(ctx context.Context) (todos []Todo, err error) {
+	cmd := `SELECT * FROM todos WHERE user_id = $1`
+	rows, err := config.Db.QueryContext(ctx, cmd, u.ID)
 	if err != nil {
 		log.Fatalln(err)
 	}
