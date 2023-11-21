@@ -14,14 +14,35 @@ func main() {
 	models.CreateUsersTable(ctx)
 	models.CreateTodosTable(ctx)
 
-	t, err := models.GetTodo(ctx, 2)
+	cu := models.User{
+		Name: "tekitou",
+		Email: "a@example.com",
+		Password: "password",
+	}
+
+	cu.CreateUser(ctx)
+
+	u, err := models.GetUser(ctx, 1)
+
+	if err != nil {
+		panic(err)
+	}
+
+	u.CreateTodo(ctx, "test")
+	u.CreateTodo(ctx, "test2")
+	u.CreateTodo(ctx, "test3")
+
+	t, err := models.GetTodos()
 
 	if err != nil {
 			panic(err)
 	}
 
+	for _, v := range t {
+	fmt.Println(v.Content)
+	}
 
-	fmt.Println(t)
+	// fmt.Println(t)
 
 	// if u.Name == "tekitou" {
 	// 	fmt.Println("User exists")

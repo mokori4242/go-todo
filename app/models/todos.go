@@ -57,3 +57,25 @@ func GetTodo(ctx context.Context, id int) (todo Todo, err error) {
 	}
 	return todo, err
 }
+
+func GetTodos() (todos []Todo, err error) {
+	cmd := `SELECT * FROM todos`
+	rows, err := config.Db.Query(cmd)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	for rows.Next() {
+		var todo Todo
+		if err := rows.Scan(
+			&todo.ID,
+			&todo.UserID,
+			&todo.Content,
+			&todo.CreatedAt,
+		); err != nil {
+			log.Fatalln(err)
+		}
+		todos = append(todos, todo)
+	}
+	rows.Close()
+	return todos, err
+}
