@@ -110,3 +110,13 @@ func (t *Todo) UpdateTodoContent(ctx context.Context, content string) (err error
 	}
 	return err
 }
+
+func (t *Todo)DeleteTodo(ctx context.Context) (err error) {
+	cmd := `DELETE FROM todos WHERE id = $1`
+	_, err = config.Db.ExecContext(ctx, cmd, t.ID)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println("Successfully deleted todo.")
+	return err
+}

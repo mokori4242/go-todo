@@ -30,7 +30,7 @@ func main() {
 	// 	fmt.Println(v)
 	// }
 
-	t, err := models.GetTodo(ctx, 1)
+	t, err := models.GetTodo(ctx, 2)
 
 	if err != nil {
 		log.Fatalln(err)
@@ -38,7 +38,7 @@ func main() {
 
 	fmt.Println(t.Content)
 
-	err = t.UpdateTodoContent(ctx, "更新だよ")
+	err = t.DeleteTodo(ctx)
 
 	if err != nil {
 		log.Fatalln(err)
