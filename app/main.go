@@ -2,57 +2,47 @@ package main
 
 import (
 	"fmt"
-	// "app/config"
+	"app/config"
 	"app/models"
-	// "log"
+	"log"
 	"context"
 )
 
 func main() {
-	// fmt.Println(config.Config.AppPort)
-	// fmt.Println(config.Config.DBUser)
-	// fmt.Println(config.Config.DBPassword)
-	// fmt.Println(config.Config.DBHost)
-	// fmt.Println(config.Config.DBPort)
-	// fmt.Println(config.Config.LogFile)
-
-	// log.Println("test")
-
-	// fmt.Println(models.Db)
-
-	// u := &models.User{
-	// 	Name: "test",
-	// 	Email: "test@example.com",
-	// 	Password: "password",
-	// }
-	// fmt.Println(u)
-
-	// u.CreateUser()
 	ctx := context.Background()
-	u, err := models.GetUser(ctx, 1)
+	config.InitDB()
+	models.CreateUsersTable(ctx)
+	models.CreateTodosTable(ctx)
+
+	// cu, err := models.GetUser(ctx, 2)
+
+	// cu.CreateTodo(ctx, "tekitou1")
+	// cu.CreateTodo(ctx, "tekitou2")
+	// cu.CreateTodo(ctx, "tekitou3")
+
+	// tby, err := cu.GetTodosByUser(ctx)
+
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// for _, v := range tby {
+	// 	fmt.Println(v)
+	// }
+
+	t, err := models.GetTodo(ctx, 2)
 
 	if err != nil {
-			panic(err)
+		log.Fatalln(err)
 	}
 
-	if u.Name == "tekitou" {
-		fmt.Println("User exists")
-	}
+	fmt.Println(t.Content)
 
-	fmt.Println(u)// 更新前のレコード
-
-	u.Name = "a"
-	u.Email = "a@a,com"
-
-	u.UpdateUser(ctx)
-
-	fmt.Println(u)// 更新後のレコード
-	u.DeleteUser(ctx)
-	u2, err := models.GetUser(ctx, 1)
+	err = t.DeleteTodo(ctx)
 
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 
-	fmt.Println(u2)// 更新前のレコード
+	fmt.Println(t.Content)
 }

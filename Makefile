@@ -13,7 +13,7 @@ down: #コンテナを終了する
 go:
 	docker compose exec app go run main.go
 test:
-	docker compose exec app go test -v
+	docker compose exec app go test -v app/models
 parallel-test:
 	docker compose exec app go test -v -short -parallel 3
 bench-test:
