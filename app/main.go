@@ -14,5 +14,6 @@ func main() {
 	config.InitDB()
 	models.CreateUsersTable(ctx)
 	models.CreateTodosTable(ctx)
+	models.CreateSessionsTable(ctx)
 	controllers.StartMainServer()
 }
