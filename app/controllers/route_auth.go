@@ -64,33 +64,41 @@ func login(w http.ResponseWriter, r *http.Request) {
 func authenticate(w http.ResponseWriter, r *http.Request) {
 	_, err := session(w, r)
 	if err == nil {
+		log.Println(err)
 		http.Redirect(w, r, "/todos", http.StatusFound)
+		return
+	}
+	if err := r.ParseForm(); err != nil {
+		log.Println(err)
+		http.Redirect(w, r, "/login", http.StatusFound)
+		return
 	}
 
 	ctx := context.Background()
-	if err := r.ParseForm(); err != nil {
-		log.Fatalln("Form parsing error:", err)
-		http.Redirect(w, r, "/login", http.StatusFound)
-	}
 	user, err := models.GetUserByEmail(ctx, r.FormValue("email"))
 	if err != nil {
-		log.Fatalln("User does not exist:", err)
+		log.Println(err)
 		http.Redirect(w, r, "/login", http.StatusFound)
+		return
 	}
 	if user.Password != models.Encrypt(r.FormValue("password")) {
-		log.Fatalln("Password is not correct:", err)
+		log.Println(err)
 		http.Redirect(w, r, "/login", http.StatusFound)
+		return
 	}
 	session, err := user.CreateSession(ctx)
 	if err != nil {
-		log.Fatalln("Session creation error:", err)
+		log.Println(err)
 		http.Redirect(w, r, "/login", http.StatusFound)
+		return
 	}
+
 	cookie := http.Cookie{
 		Name:     "_cookie",
 		Value:    session.UUID,
 		HttpOnly: true,
 	}
+
 	http.SetCookie(w, &cookie)
 	http.Redirect(w, r, "/todos", http.StatusFound)
 }
