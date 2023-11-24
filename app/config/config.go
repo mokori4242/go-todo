@@ -21,6 +21,7 @@ var Config ConfigList
 func init() {
 	LoadConfig()
 	utils.LoggingSetting(Config.LogFile)
+	InitDB()
 }
 
 func LoadConfig() {

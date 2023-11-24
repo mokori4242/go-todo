@@ -28,7 +28,7 @@ func CreateTodosTable(ctx context.Context) {
 		log.Fatalln(err)
 	}
 
-	fmt.Println("Successfully created tables.")
+	fmt.Println("Successfully created todos tables.")
 }
 
 func (u *User) CreateTodo(ctx context.Context, content string) (err error) {

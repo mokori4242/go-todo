@@ -1,0 +1,14 @@
+{{ template "navbar" . }}
+<h1>login</h1>
+<form role="form" action="/authenticate" method="post">
+    <h2>
+        <i>
+            ログインしてください
+        </i>
+    </h2>
+    <input type="email" name="email" placeholder="Email" required autofocus>
+    <input type="password" name="password" placeholder="パスワード">
+    <br />
+    <button type="submit">ログイン</button>
+    <br />
+</form>
