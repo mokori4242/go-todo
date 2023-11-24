@@ -9,6 +9,11 @@ import (
 )
 
 func signup(w http.ResponseWriter, r *http.Request) {
+	_, err := session(w, r)
+	if err == nil {
+		http.Redirect(w, r, "/todos", http.StatusFound)
+	}
+
 	switch r.Method {
 	case http.MethodGet:
 		renderSignupTemplate(w)
@@ -44,6 +49,11 @@ func processSignupForm(w http.ResponseWriter, r *http.Request) {
 }
 
 func login(w http.ResponseWriter, r *http.Request) {
+	_, err := session(w, r)
+	if err == nil {
+		http.Redirect(w, r, "/todos", http.StatusFound)
+	}
+
 	t, err := template.ParseFiles("views/templates/login.html", "views/templates/navbar.html")
 	if err != nil {
 		log.Fatalln("Template parsing error:", err)
@@ -52,6 +62,11 @@ func login(w http.ResponseWriter, r *http.Request) {
 }
 
 func authenticate(w http.ResponseWriter, r *http.Request) {
+	_, err := session(w, r)
+	if err == nil {
+		http.Redirect(w, r, "/todos", http.StatusFound)
+	}
+
 	ctx := context.Background()
 	if err := r.ParseForm(); err != nil {
 		log.Fatalln("Form parsing error:", err)
@@ -77,5 +92,5 @@ func authenticate(w http.ResponseWriter, r *http.Request) {
 		HttpOnly: true,
 	}
 	http.SetCookie(w, &cookie)
-	http.Redirect(w, r, "/", http.StatusFound)
+	http.Redirect(w, r, "/todos", http.StatusFound)
 }
