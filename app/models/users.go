@@ -149,6 +149,15 @@ func (s *Session) CheckSession(ctx context.Context) (valid bool, err error) {
 	return valid, err
 }
 
+func (s *Session) DeleteSession(ctx context.Context) (err error) {
+	cmd := `delete from sessions where uuid = $1`
+	_, err = config.Db.ExecContext(ctx, cmd, s.UUID)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	return err
+}
+
 func createUUID() (uuidobj uuid.UUID) {
 	uuidobj = uuid.NewRandom()
 	return uuidobj

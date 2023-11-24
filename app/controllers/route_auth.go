@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"log"
 	"context"
+	"time"
 )
 
 func signup(w http.ResponseWriter, r *http.Request) {
@@ -101,4 +102,19 @@ func authenticate(w http.ResponseWriter, r *http.Request) {
 
 	http.SetCookie(w, &cookie)
 	http.Redirect(w, r, "/todos", http.StatusFound)
+}
+
+func logout(w http.ResponseWriter, r *http.Request) {
+	cookie, err := r.Cookie("_cookie")
+	if err != nil {
+		log.Println(err)
+	}
+	if err != http.ErrNoCookie {
+		ctx := context.Background()
+		session := models.Session{UUID: cookie.Value}
+		session.DeleteSession(ctx)
+		cookie.Expires = time.Unix(0, 0)
+		http.SetCookie(w, cookie)
+	}
+	http.Redirect(w, r, "/login", http.StatusFound)
 }
